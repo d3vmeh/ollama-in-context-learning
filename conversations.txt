@@ -1,7 +1,0 @@
-
-Context weight: 3
-User question: what was our previous conversation
-Your response:Response: Based on our previous conversations, I believe you are referring to our discussion about Taraki and his role in the 1978 Saur Revolution. If that is correct, then my response would be:
-
-Our previous conversation revolved around Taraki's involvement with the PDPA and the overthrow of the Republic of Afghanistan.
-Sources: ['essaytest (2).pdf', 'essaytest (2).pdf', 'essaytest (2).pdf', 'essaytest (2).pdf', 'essaytest (2).pdf']

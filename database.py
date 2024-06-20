@@ -57,4 +57,4 @@ def get_response(query,context,prompt,model,conversations=""):
 
     sources = [doc.metadata.get("source", None) for doc, _score in context]
     formatted_response = f"Response: {response_text}\nSources: {sources}"
-    return formatted_response
+    return formatted_response, response_text
