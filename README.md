@@ -1,2 +1,3 @@
-Ollama PDF Chatbot with RAG and in-context learning powered by LangChain.
+# Ollama PDF Chatbot with RAG and in-context learning powered by LangChain
 
+Loads PDFs from folder, splits into chunks, and saves embeddings to Chroma database. The database is then loaded and used to provide specific inputs from the provided information to Ollama. Prior conversations are also fed into the LLM directly from a text file. The user can choose to start a new conversation or resume an old one. If resuming an old one, the prior questions and LLM responses are fed into the context window as well. The more recent a question-response pair, the greater Context Weight it has, making it more relevant to the conversation.
