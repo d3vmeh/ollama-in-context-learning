@@ -1,5 +1,3 @@
-
-
 from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
@@ -31,13 +29,13 @@ def create_chunks(path, replace_newlines=False):
 def save_database(embeddings, chunks, path="Chroma"):
     #embeddings = OllamaEmbeddings(model="llama3")
     
-    database = Chroma.from_documents(chunks,embeddings,persist_directory="Chroma")
+    database = Chroma.from_documents(chunks,embeddings,persist_directory=path)
     database.persist()
     print(f"Saved {len(chunks)} chunks to Chroma")
 
 
 def load_database(embeddings, path="Chroma"):
-    database = Chroma(persist_directory="Chroma",embedding_function=embeddings)
+    database = Chroma(persist_directory=path,embedding_function=embeddings)
     return database
 
 def query_database(query, database, num_responses = 3, similarity_threshold = 0.5):

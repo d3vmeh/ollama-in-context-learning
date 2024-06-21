@@ -13,16 +13,18 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 
 import os
 
-chunks = create_chunks("PDFs/",replace_newlines=True)
+chunks = create_chunks("ollama-in-context-learning/PDFs/",replace_newlines=True)
+
+print(len(chunks))
 
 #embeddings = OllamaEmbeddings(model="llama3")
 #embeddings = BedrockEmbeddings(credentials_profile_name="default",region_name="us-east-1")
 #embeddings = GPT4AllEmbeddings()
 embeddings = OpenAIEmbeddings()
 
-save_database(embeddings,chunks)
+#save_database(embeddings,chunks,path="ollama-in-context-learning/Chroma")
 
-db = load_database(embeddings)
+db = load_database(embeddings,path="ollama-in-context-learning/Chroma")
 
 model = Ollama(
      model = "llama3"
@@ -35,17 +37,18 @@ conversation = ConversationChain(llm = model, verbose = True, memory = memory)
 
 count = 1
 
-lst = os.listdir("conversations")
+
+lst = os.listdir("ollama-in-context-learning/conversations")
 number_files = len(lst)
 
 use_old_conversation = input("Enter the number of conversation you would like to use. Enter 0 if you want to start a new conversation ")
 if use_old_conversation == "0":
-    path_to_use = f"conversations/conversations{number_files+1}.txt"
+    path_to_use = f"ollama-in-context-learning/conversations/conversations{number_files+1}.txt"
     f = open(path_to_use,'w')
     f.close()
 
 else:
-    path_to_use = f"conversations/conversations{use_old_conversation}.txt"
+    path_to_use = f"ollama-in-context-learning/conversations/conversations{use_old_conversation}.txt"
     try:
         f = open(path_to_use,'r')
         count = int(f.read().split("\n")[-1])
