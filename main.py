@@ -8,6 +8,9 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.llms import Ollama
 from langchain_openai.llms import OpenAI
 
+from langchain.chains import ConversationChain
+from langchain.chains.conversation.memory import ConversationBufferMemory
+
 import os
 
 chunks = create_chunks("PDFs/",replace_newlines=True)
@@ -17,7 +20,7 @@ chunks = create_chunks("PDFs/",replace_newlines=True)
 #embeddings = GPT4AllEmbeddings()
 embeddings = OpenAIEmbeddings()
 
-#save_database(embeddings,chunks)
+save_database(embeddings,chunks)
 
 db = load_database(embeddings)
 
@@ -26,6 +29,9 @@ model = Ollama(
 )
 
 
+memory = ConversationBufferMemory()
+
+conversation = ConversationChain(llm = model, verbose = True, memory = memory)
 
 count = 1
 
@@ -51,6 +57,7 @@ else:
 
 
 while True:
+    print("-----------------------------------------------------------------")
     query = input("Enter a query: ")
     if query.lower() == "exit":
          break
@@ -67,6 +74,7 @@ while True:
     prompt = """
     Answer the question only based on previous conversations with the user, where greater context weight means greater relevance to the conversation, and the following context:
 
+    
 
     Here are the previous conversations with the user, you can use these to help you answer the questions:
     {conversations}
@@ -75,14 +83,16 @@ while True:
     Here is the context you can use to help you answer the questions:
     {context}
 
+
+
     ------------
 
 
-    If you do not know the answer, just say you do not know. Answer the question based on previous conversations with the user, where greater context weight means greater relevance to the conversation, and the above context: {question}"""
+    If you do not know the answer, do not make up an answer, just say you do not know. Answer the question based on previous conversations with the user, where greater context weight means greater relevance to the conversation, and the above context: {question}"""
 
     response, response_text = get_response(query, results, prompt, model,conversations=conversations)
 
-    print(f"\n{response}")
+    print(f"\n{response}\n\n\n-----------------------------------------------------------------")
 
     try: #In case a negative or invalid value is entered, file will fail to open
         file = open(path_to_use,'a')
@@ -91,7 +101,6 @@ while True:
 
     except:
         print("Error, unable to open conversation file")
-    
     
     count += 1
 

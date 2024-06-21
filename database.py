@@ -4,7 +4,7 @@ from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 
-from langchain.vectorstores.chroma import Chroma
+from langchain_community.vectorstores.chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 
 def load_doc(path):
@@ -53,8 +53,8 @@ def get_response(query,context,prompt,model,conversations=""):
     prompt_template = ChatPromptTemplate.from_template(prompt)
     prompt = prompt_template.format(conversations = conversations, context=context_text, question=query)
 
-    response_text = model.predict(prompt)
+    response_text = model.invoke(prompt)
 
     sources = [doc.metadata.get("source", None) for doc, _score in context]
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
+    formatted_response = f"Response: {response_text}\n"#Sources: {sources}"
     return formatted_response, response_text
